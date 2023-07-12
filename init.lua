@@ -7,6 +7,9 @@ Antonio Rocchia, Neovim configuration.
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- Reset default behaviour of <Space>
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+
 -- Install package manager
 -- `:help lazy.nvim.txt` for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -46,6 +49,7 @@ require('lazy').setup({
 
   require 'plugins.ui',
   require 'plugins.nvim',
+  require 'plugins.git',
 }, {})
 
 --[[
@@ -54,3 +58,4 @@ require('lazy').setup({
 require 'editor_settings'
 vim.keymap.set('n', '<leader>d', ':Rex<enter>', { desc = 'Go back to folderview' })
 vim.keymap.set('n', '<leader>f', ':Format<enter>', { desc = 'Format the document using the lsp server' })
+

@@ -39,3 +39,8 @@ vim.o.termguicolors = true
 vim.o.updatetime = 250
 vim.o.timeout = true
 vim.o.timeoutlen = 300
+
+-- 0 = From netrw open file in the netrw window
+-- 4 = From netrw open file in the last window you've been before netrw
+vim.g.netrw_browse_split = 0
+vim.g.netrw_liststyle = 3

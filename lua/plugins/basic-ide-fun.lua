@@ -25,9 +25,52 @@ return {
     end,
   },
   {
+    -- Autocompletion
+    'hrsh7th/nvim-cmp',
+    dependencies = {
+      -- Snippet Engine & its associated nvim-cmp source
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+      -- Adds LSP completion capabilities
+      'hrsh7th/cmp-nvim-lsp',
+
+      -- cmp addons
+      'hrsh7th/cmp-path',
+    },
+    config = function()
+      -- [[ Configure nvim-cmp ]]
+      -- See `:help cmp`
+      local cmp = require 'cmp'
+      local luasnip = require 'luasnip'
+      require('luasnip.loaders.from_vscode').lazy_load()
+      luasnip.config.setup {}
+
+      cmp.setup {
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert {
+          ['<C-n>'] = cmp.mapping.select_next_item(),
+          ['<C-p>'] = cmp.mapping.select_prev_item(),
+          ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          --Trigger completion when it's not working automatically
+          ['<C-Space>'] = cmp.mapping.complete {},
+        },
+        sources = {
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+          { name = 'path' },
+        },
+      }
+    end,
+  },
+  {
     -- LSP Configuration & Plugins
-    -- I also added nvim-cmp as a dependency for completition, this may not be elegant bu I like it
     'neovim/nvim-lspconfig',
+
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
       { 'williamboman/mason.nvim', config = true },
@@ -40,13 +83,6 @@ return {
       -- docs and completion for the nvim lua API.
       'folke/neodev.nvim',
 
-      -- Autocompletion
-      'hrsh7th/nvim-cmp',
-      -- Snippet Engine & its associated nvim-cmp source
-      'L3MON4D3/LuaSnip',
-      'saadparwaiz1/cmp_luasnip',
-      -- Adds LSP completion capabilities
-      'hrsh7th/cmp-nvim-lsp'
     },
 
     config = function()
@@ -100,33 +136,6 @@ return {
       --vim.keymap.set('n', '', vim.diagnostic.goto_next, { desc = 'Jump to the next diagnostic message' })
       --vim.keymap.set('n', '', vim.diagnostic.open_float, { desc = 'Expands floating diagnostic message' })
       --vim.keymap.set('n', '', vim.diagnostic.setloclist, { desc = 'Open the issues list with diagnostic' })
-
-
-      -- [[ Configure nvim-cmp ]]
-      -- See `:help cmp`
-      local cmp = require 'cmp'
-      local luasnip = require 'luasnip'
-      require('luasnip.loaders.from_vscode').lazy_load()
-      luasnip.config.setup {}
-
-      cmp.setup {
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert {
-          ['<C-n>'] = cmp.mapping.select_next_item(),
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
-          ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete {},
-        },
-        sources = {
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-        },
-      }
     end,
   }
 }
