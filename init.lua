@@ -6,9 +6,10 @@ Antonio Rocchia, Neovim configuration.
 -- Set leader key before plugins are required
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-
 -- Reset default behaviour of <Space>
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+
+require 'editor_settings'
 
 -- Install package manager
 -- `:help lazy.nvim.txt` for more info
@@ -25,12 +26,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-
---[[
--- PLUGINS
---]]
 require('lazy').setup({
-
   {
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
@@ -38,24 +34,24 @@ require('lazy').setup({
     config = function()
       vim.cmd.colorscheme 'onedark'
     end,
+
   },
 
-  --[[
-  -- Plugin configurations
-  --]]
+  { "ellisonleao/glow.nvim", config = true, cmd = "Glow" },
 
   -- Includes configurations for lsp, treesitter and autocompletition
   require 'plugins.basic-ide-fun',
-
   require 'plugins.ui',
   require 'plugins.nvim',
   require 'plugins.git',
 }, {})
 
---[[
--- Editor settings
---]]
-require 'editor_settings'
-vim.keymap.set('n', '<leader>d', ':Rex<enter>', { desc = 'Go back to folderview' })
-vim.keymap.set('n', '<leader>f', ':Format<enter>', { desc = 'Format the document using the lsp server' })
 
+local mygroup = vim.api.nvim_create_augroup('tonino_au', { clear = true })
+-- vim.api.nvim_create_autocmd(
+--   {
+--
+--   }
+
+vim.keymap.set('n', '<leader>d', vim.cmd.Ex, { desc = 'Go back to folderview' })
+vim.keymap.set('n', '<leader>f', vim.cmd.Format, { desc = 'Format the document using the lsp server' })

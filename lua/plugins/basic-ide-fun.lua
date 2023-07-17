@@ -36,6 +36,9 @@ return {
 
       -- cmp addons
       'hrsh7th/cmp-path',
+
+      -- Adds a number of user-friendly snippets
+      'rafamadriz/friendly-snippets',
     },
     config = function()
       -- [[ Configure nvim-cmp ]]
@@ -58,6 +61,31 @@ return {
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           --Trigger completion when it's not working automatically
           ['<C-Space>'] = cmp.mapping.complete {},
+          --writes the selected cmp suggestion
+          ['<CR>'] = cmp.mapping.confirm {
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true,
+          },
+          --When in insert mode: If cmp is visible -> go to next suggestion, If in a snippet -> go to next writable part of the snippet
+          ['<Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_locally_jumpable() then
+              luasnip.expand_or_jump()
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+          --Same as previous but go back instaed
+          ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.locally_jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
         },
         sources = {
           { name = 'nvim_lsp' },
