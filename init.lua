@@ -2,56 +2,60 @@
 Antonio Rocchia, Neovim configuration.
 11/07/2023
 --]]
+print("Welcome Antonio")
 
 -- Set leader key before plugins are required
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
--- Reset default behaviour of <Space>
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
-require 'editor_settings'
 
--- Install package manager
--- `:help lazy.nvim.txt` for more info
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system {
-    'git',
-    'clone',
-    '--filter=blob:none',
-    'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable', -- latest stable release
-    lazypath,
-  }
-end
-vim.opt.rtp:prepend(lazypath)
+--------------- [[ Setting options ]] ---------------
+-- See `:help vim.o`
 
-require('lazy').setup({
-  {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'onedark'
-    end,
+-- Don't highlight every line that matches when searching in file, only one
+vim.o.hlsearch = false
+vim.o.incsearch = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
 
-  },
+-- Minimal number of screen lines to keep above and below the cursor
+vim.o.scrolloff = 8
+vim.wo.signcolumn = 'yes'
+vim.opt.colorcolumn = "80"
 
-  { "ellisonleao/glow.nvim", config = true, cmd = "Glow" },
+vim.wo.number = true
+vim.wo.relativenumber = true
+-- Enable mouse mode
+vim.o.mouse = 'a'
 
-  -- Includes configurations for lsp, treesitter and autocompletition
-  require 'plugins.basic-ide-fun',
-  require 'plugins.ui',
-  require 'plugins.nvim',
-  require 'plugins.git',
-}, {})
+-- Sync clipboard between OS and Neovim.
+vim.o.clipboard = 'unnamedplus'
+
+vim.o.breakindent = true
+
+-- Better completion experience
+vim.o.completeopt = 'menuone,noselect'
+vim.o.termguicolors = true
+
+-- Decrease update time
+vim.o.updatetime = 250
+vim.o.timeout = true
+vim.o.timeoutlen = 300
+
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.opt.undofile = true
+
+-- 0 = From netrw open file in the netrw window
+-- 4 = From netrw open file in the last window you've been before netrw
+vim.g.netrw_browse_split = 0
+vim.g.netrw_liststyle = 3
+
+--------------- [[ Plugins ]] ---------------
+require 'plugins'
 
 
-local mygroup = vim.api.nvim_create_augroup('tonino_au', { clear = true })
--- vim.api.nvim_create_autocmd(
---   {
---
---   }
-
-vim.keymap.set('n', '<leader>d', vim.cmd.Ex, { desc = 'Go back to folderview' })
-vim.keymap.set('n', '<leader>f', vim.cmd.Format, { desc = 'Format the document using the lsp server' })
+--------------- [[ Key mappings ]] ---------------
+require 'keymaps'
