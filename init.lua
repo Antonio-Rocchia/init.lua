@@ -2,7 +2,7 @@
 Antonio Rocchia, Neovim configuration.
 11/07/2023
 --]]
-print("Welcome Antonio")
+print("Buon divertimento")
 
 -- Set leader key before plugins are required
 vim.g.mapleader = ' '
