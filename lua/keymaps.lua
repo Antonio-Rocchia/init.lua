@@ -29,3 +29,13 @@ vim.keymap.set('n', '<leader>cdl', vim.diagnostic.setloclist, { desc = 'Open the
 
 vim.keymap.set('n', '<leader>e', vim.cmd.Ex, { desc = 'Go back to folderview' })
 vim.keymap.set('n', '<leader>cf', vim.cmd.Format, { desc = 'Format the document using the lsp server' })
+
+local telescope_builtin = require 'telescope.builtin'
+
+
+vim.keymap.set('n', '<leader>tg', telescope_builtin.git_files, { desc = 'Search [G]it [F]iles' })
+vim.keymap.set('n', '<leader>tf', telescope_builtin.find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>th', telescope_builtin.help_tags, { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>tw', telescope_builtin.grep_string, { desc = '[S]earch current [W]ord' })
+vim.keymap.set('n', '<leader>tr', telescope_builtin.live_grep, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>td', telescope_builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })

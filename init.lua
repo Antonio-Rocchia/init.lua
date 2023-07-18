@@ -51,7 +51,7 @@ vim.opt.undofile = true
 -- 0 = From netrw open file in the netrw window
 -- 4 = From netrw open file in the last window you've been before netrw
 vim.g.netrw_browse_split = 0
-vim.g.netrw_liststyle = 3
+vim.g.netrw_liststyle = 0
 
 --------------- [[ Plugins ]] ---------------
 require 'plugins'

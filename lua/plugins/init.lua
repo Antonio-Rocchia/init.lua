@@ -19,14 +19,14 @@ require('lazy').setup({
     name = "catppuccin",
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme "catppuccin" -- catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
+      vim.cmd.colorscheme "catppuccin-mocha" -- frappe, macchiato, mocha
     end,
   },
 
   {
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
-      --'nvim-treesitter/nvim-treesitter-textobjects',
+      -- { 'nvim-treesitter/nvim-treesitter-textobjects' },
     },
     build = ':TSUpdate',
     opts = function()
@@ -123,5 +123,27 @@ require('lazy').setup({
     opts = require('plugins.configs.lualine'),
   },
 
-  { 'folke/which-key.nvim' },
- }, {})
+  { 'folke/which-key.nvim', opts = {} },
+
+  {
+    'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
+    dependencies = {
+      { 'nvim-lua/plenary.nvim' },
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'make',
+        cond = function()
+          return vim.fn.executable 'make' == 1
+        end,
+      },
+
+    },
+    opts = require("plugins.configs.telescope"),
+    config = function()
+      pcall(require('telescope').load_extension, 'fzf')
+    end,
+  },
+
+
+}, {})
