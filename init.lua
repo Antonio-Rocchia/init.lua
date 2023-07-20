@@ -48,10 +48,9 @@ vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 
--- 0 = From netrw open file in the netrw window
--- 4 = From netrw open file in the last window you've been before netrw
-vim.g.netrw_browse_split = 0
-vim.g.netrw_liststyle = 0
+vim.g.netrw_keepdir = 0
+vim.g.netrw_winsize = 20
+
 
 --------------- [[ Plugins ]] ---------------
 require 'plugins'
