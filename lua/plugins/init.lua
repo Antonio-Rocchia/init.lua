@@ -129,8 +129,11 @@ require('lazy').setup({
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
     dependencies = require("plugins.configs.telescope").get_dependencies(),
+    keys = require("plugins.configs.telescope").get_keys(),
     opts = require("plugins.configs.telescope").get_opts(),
-    config = require("plugins.configs.telescope").run_config
+    config = function(_, opts)
+      require("plugins.configs.telescope").run_config(opts)
+    end
   },
 
 

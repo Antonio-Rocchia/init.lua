@@ -1,5 +1,17 @@
 local M = {}
 
+function M.get_keys()
+  local keys = {
+    { "<leader>ff" , "<Cmd>Telescope find_files<Enter>", desc="Search for files (respecting .gitignore)"},
+    { "<leader>fg", "<Cmd>Telescope live_grep<Enter>", desc="Search for a string and get results live as you type, respects .gitignore"},
+    { "<leader>fs", "<Cmd>Telescope grep_string<Enter>", desc="Searches for the string under your cursor in your current working directory"},
+    { "<leader>fb", "<Cmd>Telescope buffers<Enter>", desc="Lists open buffers in current neovim instance, opens selected buffer on"},
+    { "<leader>fo", "<Cmd>Telescope oldfiles<Enter>", desc="Lists previously open files, opens on `<cr>`"},
+  }
+
+  return keys
+end
+
 function M.get_dependencies()
   local dependencies = {
       { 'nvim-lua/plenary.nvim' },
@@ -29,8 +41,8 @@ function M.get_opts()
       path_display = { "smart" },
       mappings = {
         i = {
-          ["<C-k>"] = "move_selection_next",
-          ["<C-j>"] = "move_selection_previous",
+          ["<C-j>"] = "move_selection_next",
+          ["<C-k>"] = "move_selection_previous",
           ["<C-q>"] = "close",
           ["<C-h>"] = "cycle_history_next",
           ["<C-l>"] = "cycle_history_prev",
@@ -38,8 +50,8 @@ function M.get_opts()
           ["<C-w>"] = "which_key",
         },
         n = {
-          ["<C-k>"] = "move_selection_next",
-          ["<C-j>"] = "move_selection_previous",
+          ["<C-j>"] = "move_selection_next",
+          ["<C-k>"] = "move_selection_previous",
           ["<C-w>"] = "which_key",
         },
       },
@@ -74,6 +86,7 @@ function M.get_opts()
 end
 
 function M.run_config(opts)
+  require("telescope").setup(opts)
   pcall(require('telescope').load_extension, 'fzf')
 end
 
