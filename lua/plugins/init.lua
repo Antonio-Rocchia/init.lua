@@ -128,21 +128,9 @@ require('lazy').setup({
   {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
-    dependencies = {
-      { 'nvim-lua/plenary.nvim' },
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        build = 'make',
-        cond = function()
-          return vim.fn.executable 'make' == 1
-        end,
-      },
-
-    },
-    opts = require("plugins.configs.telescope"),
-    config = function()
-      pcall(require('telescope').load_extension, 'fzf')
-    end,
+    dependencies = require("plugins.configs.telescope").get_dependencies(),
+    opts = require("plugins.configs.telescope").get_opts(),
+    config = require("plugins.configs.telescope").run_config
   },
 
 
