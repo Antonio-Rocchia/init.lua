@@ -78,6 +78,7 @@ return {
       -- or https://github.com/nvim-neo-tree/neo-tree.nvim/blob/main/lua/neo-tree/defaults.lua
       sources = { "filesystem", "buffers", "git_status", "document_symbols" },
       open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "Outline" },
+      close_if_last_window = true,
       filesystem = {
         bind_to_cwd = false,
         use_libuv_file_watcher = true,
