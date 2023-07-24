@@ -19,6 +19,7 @@ require('lazy').setup(
   {
     spec = {
       { import = "plugins.core" },
+      { import = "plugins.extra.git-integration" }
     },
   }
 )
