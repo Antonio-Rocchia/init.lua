@@ -25,7 +25,6 @@ return {
     },
   },
   opts = function()
-    vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
     local cmp = require("cmp")
     local luasnip = require("luasnip")
 
@@ -72,11 +71,6 @@ return {
         { name = 'luasnip' },
         { name = "buffer" },
         { name = "path" },
-      },
-      experimental = {
-        ghost_text = {
-          hl_group = "CmpGhostText",
-        },
       },
     }
   end,

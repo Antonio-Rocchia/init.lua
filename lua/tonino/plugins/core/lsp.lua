@@ -2,28 +2,11 @@ return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    {
-      "williamboman/mason.nvim",
-      build = ":MasonUpdate",
-      opts = {
-        ensure_installed = {},
-      },
-    },
-    {
-      "williamboman/mason-lspconfig.nvim",
-      opts = {
-        ensure_installed = {},
-        automatic_installation = false,
-      },
-    },
+    { "williamboman/mason.nvim", build = ":MasonUpdate", opts = {}, },
+    { "williamboman/mason-lspconfig.nvim", opts = { automatic_installation = false, }, },
     { "folke/neodev.nvim",    opts = {} },
     { "hrsh7th/cmp-nvim-lsp", dependencies = { { "hrsh7th/nvim-cmp" } } },
-    {
-      "j-hui/fidget.nvim",
-      tag = "legacy",
-      event = "LspAttach",
-      opts = {}
-    },
+    { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", opts = {} },
   },
   keys = {
     -- read :h vim.diagnostic
@@ -40,6 +23,9 @@ return {
         },
       },
     },
+    setup = {
+      -- Handlers for specific servers
+    }
   },
   config = function(_, opts)
     -- This function gets run when an LSP connects to a particular buffer.
@@ -49,14 +35,10 @@ return {
       vim.keymap.set("n", "<leader>cf", vim.lsp.buf.format, { desc = "LSP: Format", buffer = bufnr })
       vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "LSP: Rename symbol", buffer = bufnr })
       vim.keymap.set("n", "<leader>cI", "<Cmd>LspInfo<CR>", { desc = "LSP: LspInfo", buffer = bufnr })
-      vim.keymap.set("n", "<leader>cs", vim.lsp.buf.signature_help,
-        { desc = "LSP: Signature documentation (temporary)", buffer = bufnr })
-      vim.keymap.set("n", "<leader>cwa", vim.lsp.buf.add_workspace_folder,
-        { desc = "LSP: Add folder to workspace", buffer = bufnr })
-      vim.keymap.set("n", "<leader>cwr", vim.lsp.buf.remove_workspace_folder,
-        { desc = "LSP: Remove folder to workspace", buffer = bufnr })
-      vim.keymap.set('n', '<leader>cwl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
-        { desc = "LSP: List workspace folders", buffer = bufnr })
+      vim.keymap.set("n", "<leader>cs", vim.lsp.buf.signature_help, { desc = "LSP: Signature documentation (temporary)", buffer = bufnr })
+      vim.keymap.set("n", "<leader>cwa", vim.lsp.buf.add_workspace_folder, { desc = "LSP: Add folder to workspace", buffer = bufnr })
+      vim.keymap.set("n", "<leader>cwr", vim.lsp.buf.remove_workspace_folder, { desc = "LSP: Remove folder to workspace", buffer = bufnr })
+      vim.keymap.set('n', '<leader>cwl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, { desc = "LSP: List workspace folders", buffer = bufnr })
       vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "LSP: Goto declaration", buffer = bufnr })
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Goto definition", buffer = bufnr })
       vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "LSP: Goto implementation", buffer = bufnr })
@@ -73,8 +55,8 @@ return {
       ensure_installed = vim.tbl_keys(opts.servers),
     }
 
-    mason_lspconfig.setup_handlers {
-      function(server_name)
+    local mason_handlers = {
+      function(server_name) -- Default handler
         require('lspconfig')[server_name].setup {
           capabilities = capabilities,
           on_attach = on_attach,
@@ -82,5 +64,11 @@ return {
         }
       end,
     }
+    -- Add additional handler for specific languages
+    for server, handler in pairs(opts.setup) do
+      mason_handlers[server] = handler(on_attach)
+    end
+
+    mason_lspconfig.setup_handlers(mason_handlers)
   end
 }
