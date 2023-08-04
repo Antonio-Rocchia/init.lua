@@ -21,6 +21,9 @@ require('lazy').setup(
       { import = "tonino.plugins.core" },
       { import = "tonino.plugins.core.colorschemes" },
       { import = "tonino.plugins.core.conveniences" },
+      { import = "tonino.plugins.core.navigation" },
+
+      { import = "tonino.plugins.extra.lang.java" }
     },
   }
 )
