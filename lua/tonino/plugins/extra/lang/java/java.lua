@@ -39,8 +39,7 @@ return {
                 end
               end
 
-              local root_dir = require("jdtls.setup").find_root({ '.git', 'mvnw', 'gradlew', 'ant/', '.project' })
-              print(root_dir)
+              local root_dir = require("jdtls.setup").find_root({ '.git', 'gradlew', })
               local project_name = root_dir and vim.fs.basename(root_dir)
 
               local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -93,7 +92,6 @@ return {
               }
               require('jdtls').start_or_attach(config)
 
-              print(root_dir)
               set_default_map_on_attach(vim.api.nvim_get_current_buf())
 
               vim.keymap.set("n", "<leader>co", function() require("jdtls").organize_imports() end, { desc = "Organize Imports", })
